@@ -1,34 +1,49 @@
-  # linus命令
+  # 登录网址
+  https://ddlnt.xyz
   
+  # linus命令
+
   cd /home
+  
   mkdir -p luban_springcloud_demo/data/nacos_data
+  
   mkdir -p luban_springcloud_demo/data/mysql_data
+  
   cd luban_springcloud_demo
   
   # 上传初始化文件init.zip到当前目录
   unzip init.zip
+  
   rm init.zip
+  
   docker run -d --name luban-nacos-demo -e MODE=standalone -p 8848:8848 -p 9848:9848 -p 9849:9849  nacos/nacos-server:v2.3.2
   
   # 进入nacos控制台，http://localhost:8848/nacos
   # 导入配置文件：nacos_config.zip
   # 复制容器内文件到宿主机
   docker cp luban-nacos-demo:/home/nacos/conf ./data/nacos_data
+  
   docker cp luban-nacos-demo:/home/nacos/data ./data/nacos_data
+  
   docker cp luban-nacos-demo:/home/nacos/logs ./data/nacos_data
+  
   docker stop luban-nacos-demo
+  
   docker rm luban-nacos-demo
 
   # 部署环境
   docker-compose -f docker-compose.env.yml pull
+  
   docker-compose -f docker-compose.env.yml up -d
   
   # 初始化文件放入容器内，执行文件导入数据
   docker cp ./init/openldap_init/init.ldif luban-openldap-demo:/tmp/init.ldif
+  
   docker exec luban-openldap-demo ldapadd -x -D "cn=admin,dc=ddlnt,dc=xyz" -w ldapPassword -f /tmp/init.ldif
 
   # 部署服务
   docker-compose -f docker-compose.service.yml pull
+  
   docker-compose -f docker-compose.service.yml up -d
 
 
