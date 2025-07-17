@@ -1,0 +1,66 @@
+version: '3.8'
+
+# 服务通用日志配置
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+# docker网络配置
+networks:
+  luban-network:
+#    external: true  # 表明网络是外部已存在的
+    driver: bridge  # 默认驱动bridge，可不填写，执行up是自动创建内部管理网络
+# 老版本/独立插件：使用docker-compose，新版本/深度集成：使用docker compose（可以兼容旧版本，使用docker-compose）
+# 拉取镜像（若本地无镜像，Docker 会自动从私有仓库拉取）：docker-compose -f docker-compose.service.yml pull
+# 启动服务： docker-compose -f docker-compose.service.yml up -d
+# 停止服务并删除容器及关联网络和匿名卷： docker-compose -f docker-compose.service.yml down
+# 停止服务： docker-compose -f docker-compose.service.yml stop
+# 删除已停止的容器： docker-compose -f docker-compose.service.yml rm -f
+# 查看是否加入网络：docker network inspect luban-network
+services:
+  #docker  compose -f docker-compose.service.yml up -d
+# 二、业务服务
+  # 服务 1：server-gateway
+  luban-server-gateway:  # 容器的主机名（通讯时以该名作为唯一标识）
+    build: ./server-gateway  # 指定构建镜像的目录
+#    image: server-gateway:1.0  # 镜像名
+    image: ddlnt.xyz:5000/server-gateway:1.1  # 从私有仓库拉取镜像
+    container_name: luban-server-gateway  # 设置容器的名称
+    ports:
+      - "7573:7573"  # 端口映射
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    logging: *default-logging  # 引用通用配置
+    networks:  # 加入网络
+      - luban-network
+#    depends_on:
+#      luban-nacos-demo:
+#        condition: service_healthy  # 等待 nacos 健康检查通过
+  # 服务 2：service-user（service 模块）
+  luban-service-user:
+    build: ./service/service-user
+#    image: service-user:1.0
+    image: ddlnt.xyz:5000/service-user:1.1
+    container_name: luban-service-user
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    logging: *default-logging
+    networks:  # 加入网络
+      - luban-network
+#    depends_on:
+#      - luban-server-gateway
+  # 服务 3：service-product （service 模块）
+  luban-service-product:
+    build: ./service/service-product
+#    image: service-product:1.0
+    image: ddlnt.xyz:5000/service-product:1.1
+    container_name: luban-service-product
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    logging: *default-logging
+    networks:  # 加入网络
+      - luban-network
+#    depends_on:
+#      - luban-server-gateway

@@ -1,0 +1,35 @@
+# 1. 创建基础组织单元（用于分类存储用户、角色、权限）
+dn: ou=Users,dc=ddlnt,dc=xyz
+objectClass: organizationalUnit
+ou: Users
+description: 存储所有用户
+
+
+# 普通用户
+dn: cn=ldap_user_1,ou=Users,dc=ddlnt,dc=xyz
+objectClass: inetOrgPerson
+cn: ldap_user_1
+sn: user
+uid: ldap_user_1
+userPassword: ldap_user_1
+description: USER
+
+
+# 编辑者用户
+dn: cn=ldap_editor_1,ou=Users,dc=ddlnt,dc=xyz
+objectClass: inetOrgPerson
+cn: ldap_editor_1
+sn: editor
+uid: ldap_editor_1
+userPassword: ldap_editor_1
+description: EDITOR
+
+
+# 管理员用户
+dn: cn=ldap_adm_1,ou=Users,dc=ddlnt,dc=xyz
+objectClass: inetOrgPerson
+cn: ldap_adm_1
+sn: admin
+uid: ldap_adm_1
+userPassword: ldap_adm_1
+description: PRODUCT_ADMIN

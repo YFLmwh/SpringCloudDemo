@@ -1,0 +1,42 @@
+server:
+  port: 9011
+
+spring:
+  application:
+    name: service-user
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        shared-configs:
+          - data-id: mysql.yaml
+          - data-id: mybatis.yaml
+          - data-id: satoken.yaml
+          - data-id: ldap.yaml
+          - data-id: github-oauth2.yaml
+        prefix: ${spring.application.name}
+        file-extension: yaml
+#debug: true
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  cloud:
+    nacos:
+      discovery:
+        server-addr: luban-nacos-demo:8848
+      config:
+        server-addr: luban-nacos-demo:8848
