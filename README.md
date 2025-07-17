@@ -11,7 +11,7 @@ mkdir -p luban_springcloud_demo/data/mysql_data
 
 cd luban_springcloud_demo
 
-# 上传初始化文件init.zip到当前目录
+# 上传初始化文件init.zip到当前目录 （zip目录）
 unzip init.zip
 
 rm init.zip
@@ -36,7 +36,7 @@ docker-compose -f docker-compose.env.yml pull
 
 docker-compose -f docker-compose.env.yml up -d
 
-# 初始化文件放入容器内，执行文件导入数据
+# 初始化文件放入容器内，执行文件导入数据（zip目录）
 docker cp ./init/openldap_init/init.ldif luban-openldap-demo:/tmp/init.ldif
 
 docker exec luban-openldap-demo ldapadd -x -D "cn=admin,dc=ddlnt,dc=xyz" -w ldapPassword -f /tmp/init.ldif
