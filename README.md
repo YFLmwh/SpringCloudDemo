@@ -1,6 +1,9 @@
 # 登录网址
 https://ddlnt.xyz
 
+## jdk版本要求：jdk17
+当前使用版本jdk17.0.12
+
 # linus命令
 
 cd /home
