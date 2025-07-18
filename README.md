@@ -11,7 +11,7 @@ mkdir -p luban_springcloud_demo/data/mysql_data
 
 cd luban_springcloud_demo
 
-## 上传zip目录中的文件到当前目录 （luban_springcloud_demo）
+## 上传zip目录中的压缩包init.zip（vue前端dist、配置文件nacos_config.zip）到当前目录 （luban_springcloud_demo）
 unzip init.zip
 
 rm init.zip
