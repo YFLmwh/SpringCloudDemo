@@ -18,7 +18,7 @@ rm init.zip
 
 docker run -d --name luban-nacos-demo -e MODE=standalone -p 8848:8848 -p 9848:9848 -p 9849:9849  nacos/nacos-server:v2.3.2
 
-## 进入nacos控制台，http://localhost:8848/nacos
+## 进入nacos控制台，http://IP:8848/nacos
 ## 导入配置文件：nacos_config.zip
 ## 复制容器内文件到宿主机
 docker cp luban-nacos-demo:/home/nacos/conf ./data/nacos_data
@@ -31,12 +31,12 @@ docker stop luban-nacos-demo
 
 docker rm luban-nacos-demo
 
-## 部署环境
+## 部署环境（确认MySQL初始化文件/home/luban_springcloud_demo/init/mysql_init/init.sql存在）
 docker-compose -f docker-compose.env.yml pull
 
 docker-compose -f docker-compose.env.yml up -d
 
-## 初始化文件（init目录  /init/openldap_init/init.ldif）放入容器内，执行文件导入数据
+## Ldap初始化文件（/home/luban_springcloud_demo/init/openldap_init/init.ldif）放入容器临时目录，执行文件导入数据
 docker cp ./init/openldap_init/init.ldif luban-openldap-demo:/tmp/init.ldif
 
 docker exec luban-openldap-demo ldapadd -x -D "cn=admin,dc=ddlnt,dc=xyz" -w ldapPassword -f /tmp/init.ldif
