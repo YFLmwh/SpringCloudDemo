@@ -41,9 +41,13 @@ docker cp ./init/openldap_init/init.ldif luban-openldap-demo:/tmp/init.ldif
 
 docker exec luban-openldap-demo ldapadd -x -D "cn=admin,dc=ddlnt,dc=xyz" -w ldapPassword -f /tmp/init.ldif
 
-## 部署服务
-docker-compose -f docker-compose.service.yml pull
+## 拉取镜像
+docker pull ddlnt.xyz:5000/server-gateway:1.1
 
+docker pull ddlnt.xyz:5000/service-user:1.1
+
+docker pull ddlnt.xyz:5000/service-product:1.1
+## 部署服务
 docker-compose -f docker-compose.service.yml up -d
 
 
